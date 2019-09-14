@@ -1,11 +1,11 @@
 package at.rodrigo.api.gateway.rest.controller;
 
-
 import at.rodrigo.api.gateway.entity.Api;
 import at.rodrigo.api.gateway.entity.Path;
 import at.rodrigo.api.gateway.entity.Verb;
+import at.rodrigo.api.gateway.rest.repository.ApiRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +21,24 @@ import java.util.List;
 @Slf4j
 public class RouteController {
 
+    @Autowired
+    ApiRepository apiRepository;
+
     @RequestMapping( path="/rest", method= RequestMethod.GET)
     public ResponseEntity<List<Api>> getRestRoutes(HttpServletRequest request) {
+        return new ResponseEntity<>(apiRepository.findAll(), HttpStatus.OK);
+    }
+
+
+    @RequestMapping( path="/rest", method= RequestMethod.POST)
+    public ResponseEntity<String> tempPost(HttpServletRequest request) {
 
         Api api1 = new Api();
         api1.setEndpoint("localhost:9010");
         api1.setName("ROD-SUPER-SAFE-API");
         api1.setSecured(true);
         api1.setContext("super-safe");
+        api1.setJwsEndpoint("https://rodrigocoelho.auth0.com/.well-known/jwks.json");
         Path v1 = new Path();
         v1.setPath("/exposed");
         v1.setVerb(Verb.GET);
@@ -44,11 +54,13 @@ public class RouteController {
         api1PathList.add(v12);
         api1.setPaths(api1PathList);
 
+        apiRepository.save(api1);
+
 
         Api api2 = new Api();
         api2.setEndpoint("localhost:9010");
         api2.setName("ROD-UNSAFE-API");
-        api2.setSecured(true);
+        api2.setSecured(false);
         api2.setContext("super-unsafe");
 
         Path v2 = new Path();
@@ -62,10 +74,10 @@ public class RouteController {
         apiList.add(api1);
         apiList.add(api2);
 
-        JSONObject result = new JSONObject();
-        result.put("error", "permission denied");
+        apiRepository.save(api2);
 
-        return new ResponseEntity<List<Api>>(apiList, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }
