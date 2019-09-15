@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/route")
@@ -39,15 +40,22 @@ public class RouteController {
         api1.setSecured(true);
         api1.setContext("super-safe");
         api1.setJwsEndpoint("https://rodrigocoelho.auth0.com/.well-known/jwks.json");
+        api1.setId(UUID.randomUUID().toString());
         Path v1 = new Path();
         v1.setPath("/exposed");
         v1.setVerb(Verb.GET);
+        v1.setBlockIfInError(false);
+        v1.setMaxAllowedFailedCalls(-1);
         Path v11 = new Path();
         v11.setPath("/exposed");
         v11.setVerb(Verb.POST);
+        v11.setBlockIfInError(false);
+        v11.setMaxAllowedFailedCalls(-1);
         Path v12 = new Path();
         v12.setPath("/exposed");
         v12.setVerb(Verb.PUT);
+        v12.setBlockIfInError(true);
+        v12.setMaxAllowedFailedCalls(5);
         List<Path> api1PathList = new ArrayList<Path>();
         api1PathList.add(v1);
         api1PathList.add(v11);
@@ -62,10 +70,13 @@ public class RouteController {
         api2.setName("ROD-UNSAFE-API");
         api2.setSecured(false);
         api2.setContext("super-unsafe");
+        api2.setId(UUID.randomUUID().toString());
 
         Path v2 = new Path();
         v2.setPath("/internal");
         v2.setVerb(Verb.GET);
+        v2.setBlockIfInError(false);
+        v2.setMaxAllowedFailedCalls(-1);
         List<Path> api2PathList = new ArrayList<Path>();
         api2PathList.add(v2);
         api2.setPaths(api2PathList);
