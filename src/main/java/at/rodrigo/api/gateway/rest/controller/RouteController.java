@@ -1,6 +1,7 @@
 package at.rodrigo.api.gateway.rest.controller;
 
 import at.rodrigo.api.gateway.entity.Api;
+import at.rodrigo.api.gateway.entity.EndpointType;
 import at.rodrigo.api.gateway.entity.Path;
 import at.rodrigo.api.gateway.entity.Verb;
 import at.rodrigo.api.gateway.rest.repository.ApiRepository;
@@ -8,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -25,17 +24,22 @@ public class RouteController {
     @Autowired
     ApiRepository apiRepository;
 
-    @RequestMapping( path="/rest", method= RequestMethod.GET)
-    public ResponseEntity<List<Api>> getRestRoutes(HttpServletRequest request) {
-        return new ResponseEntity<>(apiRepository.findAll(), HttpStatus.OK);
+    @GetMapping( path="/simple-rest" )
+    public ResponseEntity<List<Api>> getSimpleRestRoutes(HttpServletRequest request) {
+        return new ResponseEntity<>(apiRepository.findAllBySwagger(false), HttpStatus.OK);
     }
 
+    @GetMapping( path="/swagger-rest" )
+    public ResponseEntity<List<Api>> getSwaggerRestRoutes(HttpServletRequest request) {
+        return new ResponseEntity<>(apiRepository.findAllBySwagger(true), HttpStatus.OK);
+    }
 
-    @RequestMapping( path="/rest", method= RequestMethod.POST)
-    public ResponseEntity<String> tempPost(HttpServletRequest request) {
+    @PostMapping( path="/swagger-rest" )
+    public ResponseEntity<String> postSwaggerEndpoints(HttpServletRequest request) {
 
-        Api api1 = new Api();
+        /*Api api1 = new Api();
         api1.setEndpoint("localhost:9010");
+        api1.setEndpointType(EndpointType.HTTP);
         api1.setName("ROD-SUPER-SAFE-API");
         api1.setSecured(true);
         api1.setContext("super-safe");
@@ -62,30 +66,53 @@ public class RouteController {
         api1PathList.add(v12);
         api1.setPaths(api1PathList);
 
-        apiRepository.save(api1);
-
+        apiRepository.save(api1);*/
 
         Api api2 = new Api();
         api2.setEndpoint("localhost:9010");
+        api2.setEndpointType(EndpointType.HTTP);
         api2.setName("ROD-UNSAFE-API");
         api2.setSecured(false);
+        api2.setSwagger(true);
+        api2.setSwaggerEndpoint("http://localhost:9010/v2/api-docs");
+
         api2.setContext("super-unsafe");
         api2.setId(UUID.randomUUID().toString());
 
-        Path v2 = new Path();
-        v2.setPath("/internal");
-        v2.setVerb(Verb.GET);
-        v2.setBlockIfInError(false);
-        v2.setMaxAllowedFailedCalls(-1);
-        List<Path> api2PathList = new ArrayList<Path>();
-        api2PathList.add(v2);
-        api2.setPaths(api2PathList);
+        apiRepository.save(api2);
 
-        List<Api> apiList = new ArrayList<Api>();
-        apiList.add(api1);
+        List<Api> apiList = new ArrayList<>();
         apiList.add(api2);
 
-        apiRepository.save(api2);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping( path="/simple-rest" )
+    public ResponseEntity<String> postSimpleRestEndpoints(HttpServletRequest request) {
+
+        Api api3 = new Api();
+        api3.setEndpoint("gateway.theinterlink.eu:9443");
+        api3.setEndpointType(EndpointType.HTTPS);
+        api3.setName("WSO2-HEALTH-ENDPOINT");
+        api3.setSecured(false);
+        api3.setContext("wso2");
+        api3.setId(UUID.randomUUID().toString());
+        api3.setSwagger(false);
+
+        Path v3 = new Path();
+        v3.setPath("/services/Version");
+        v3.setVerb(Verb.GET);
+        v3.setBlockIfInError(false);
+        v3.setMaxAllowedFailedCalls(-1);
+        List<Path> api3PathList = new ArrayList<Path>();
+        api3PathList.add(v3);
+        api3.setPaths(api3PathList);
+
+
+        apiRepository.save(api3);
+
+        List<Api> apiList = new ArrayList<>();
+        apiList.add(api3);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
