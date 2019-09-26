@@ -72,12 +72,17 @@ public class RouteController {
         api2.setEndpoint("localhost:9010");
         api2.setEndpointType(EndpointType.HTTP);
         api2.setName("ROD-UNSAFE-API");
-        api2.setSecured(false);
+        api2.setSecured(true);
+        api2.setJwsEndpoint("https://rodrigocoelho.auth0.com/.well-known/jwks.json");
         api2.setSwagger(true);
         api2.setSwaggerEndpoint("http://localhost:9010/v2/api-docs");
 
         api2.setContext("super-unsafe");
         api2.setId(UUID.randomUUID().toString());
+
+        List<String> audience = new ArrayList<>();
+        audience.add("https://capi.gateway.api");
+        api2.setAudience(audience);
 
         apiRepository.save(api2);
 
