@@ -10,16 +10,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -41,13 +40,12 @@ public class ApiGateway {
                 .consumes(new HashSet<>(Arrays.asList("application/json")))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("at.rodrigo.api.gateway.rest"))
-                //.paths(paths())
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .paths(Predicates.not(PathSelectors.regex("/consumer.*")))
                 .paths(Predicates.not(PathSelectors.regex("/grafana.*")))
-                .build();
-                //.securitySchemes(newArrayList(basicAuth()))
-                //.securityContexts(newArrayList(securityContext()));
+                .build()
+                .securitySchemes(newArrayList(apiKey()))
+                .securityContexts(newArrayList(securityContext()));
     }
 
     private ApiInfo apiInfo() {
@@ -58,10 +56,21 @@ public class ApiGateway {
                 .build();
     }
 
-    private Predicate<String> paths() {
-        Collection<String> paths = new ArrayList<>();
-        paths.add("/rest.*");
-        return Predicates.in(paths);
-        //return Predicates.not(PathSelectors.regex("/basic-error-controller.*"));
+    private ApiKey apiKey() {
+        return new ApiKey("Bearer", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("/.*"))
+                .build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return newArrayList(new SecurityReference("Bearer", authorizationScopes));
     }
 }
