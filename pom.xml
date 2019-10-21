@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>at.rodrigo.api.gateway</groupId>
-  <artifactId>api-gateway-rest</artifactId>
+  <artifactId>capi-gateway-rest</artifactId>
   <packaging>jar</packaging>
   <version>1.0</version>
 
@@ -15,6 +15,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.boot-version>2.1.7.RELEASE</spring.boot-version>
+    <docker.image.prefix>surisoft</docker.image.prefix>
   </properties>
 
   <parent>
@@ -56,6 +57,51 @@
       <artifactId>api-gateway-entity</artifactId>
       <version>1.0</version>
     </dependency>
+    <!--dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>1.1.30</version>
+    </dependency-->
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-oauth2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-jwt</artifactId>
+      <version>1.0.10.RELEASE</version>
+    </dependency>
+
+
+
+
+
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security.oauth.boot</groupId>
+      <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+      <version>2.1.7.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>auth0-spring-security-api</artifactId>
+      <version>1.2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast-spring</artifactId>
+    </dependency>
 
 
       <!-- Test -->
@@ -86,21 +132,62 @@
       <version>1.0</version>
     </dependency>
     <dependency>
+      <groupId>at.rodrigo.api.gateway</groupId>
+      <artifactId>api-gateway-cache</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-mongodb</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>2.9.2</version>
+    </dependency>
+      <dependency>
+          <groupId>com.nimbusds</groupId>
+          <artifactId>nimbus-jose-jwt</artifactId>
+          <version>7.8</version>
+      </dependency>
+
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot-version}</version>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>1.6.1</version>
+        <configuration>
+          <to>
+            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
+          </to>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
+            <id>unpack</id>
+            <phase>package</phase>
             <goals>
-              <goal>repackage</goal>
+              <goal>unpack</goal>
             </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${project.version}</version>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
           </execution>
         </executions>
       </plugin>

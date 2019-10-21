@@ -8,6 +8,7 @@ import java.util.List;
 public interface ApiRepository extends MongoRepository<Api, String> {
 
     List<Api> findAllBySwagger(boolean swagger);
+    Api findByName(String apiName);
 
 
 }
