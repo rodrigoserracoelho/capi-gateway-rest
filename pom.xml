@@ -57,12 +57,6 @@
       <artifactId>api-gateway-entity</artifactId>
       <version>1.0</version>
     </dependency>
-    <!--dependency>
-      <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.1.30</version>
-    </dependency-->
-
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-oauth2</artifactId>
@@ -72,13 +66,6 @@
       <artifactId>spring-security-jwt</artifactId>
       <version>1.0.10.RELEASE</version>
     </dependency>
-
-
-
-
-
-
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
@@ -88,12 +75,6 @@
       <artifactId>spring-security-oauth2-autoconfigure</artifactId>
       <version>2.1.7.RELEASE</version>
     </dependency>
-    <dependency>
-      <groupId>com.auth0</groupId>
-      <artifactId>auth0-spring-security-api</artifactId>
-      <version>1.2.6</version>
-    </dependency>
-
     <dependency>
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast</artifactId>
@@ -110,11 +91,6 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
-    <!--dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-test-spring</artifactId>
-      <scope>test</scope>
-    </dependency-->
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -125,11 +101,6 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20140107</version>
-    </dependency>
-    <dependency>
-      <groupId>at.rodrigo.api.gateway</groupId>
-      <artifactId>api-gateway-entity</artifactId>
-      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>at.rodrigo.api.gateway</groupId>
@@ -153,7 +124,7 @@
       <dependency>
           <groupId>com.nimbusds</groupId>
           <artifactId>nimbus-jose-jwt</artifactId>
-          <version>7.8</version>
+          <version>8.2</version>
       </dependency>
 
   </dependencies>
