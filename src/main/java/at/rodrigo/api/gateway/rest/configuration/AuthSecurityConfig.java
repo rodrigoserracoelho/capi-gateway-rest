@@ -39,8 +39,11 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${gateway.token.endpoint}")
     String oauthEndpoint;
 
-    @Value(value = "${gateway.wellknown.jwk}")
-    private String wellKnownJwk;
+    @Value("${gateway.wellknown.jwk}")
+    String wellKnownJwk;
+
+    @Value("${gateway.swagger.endpoint}")
+    String swaggerEndpoint;
 
     @Autowired
     JWSChecker jwsChecker;
@@ -95,7 +98,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
             .ignoringAntMatchers(oauthEndpoint)
             .disable()
-            .authorizeRequests().antMatchers(wellKnownJwk).anonymous()
+            .authorizeRequests().antMatchers(wellKnownJwk, swaggerEndpoint).anonymous()
             .anyRequest().authenticated();
     }
 
