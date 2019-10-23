@@ -101,7 +101,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources/**",
                 "/configuration/security",
                 "/swagger-ui.html",
-                "/webjars/**").anonymous()
+                "/webjars/**", "/swagger/**").anonymous()
             .anyRequest().authenticated();
     }
 

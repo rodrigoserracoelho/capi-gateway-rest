@@ -50,8 +50,8 @@ public class ApiGateway {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("CAPI Gateway Management Endpoint")
-                .description("Automation Endpoint for publishing on the API Gateway")
+                .title("CAPI Gateway")
+                .description("Management Endpoint")
                 .version("1.0").contact(new Contact("SURISOFT","","me@rodrigo.at"))
                 .build();
     }

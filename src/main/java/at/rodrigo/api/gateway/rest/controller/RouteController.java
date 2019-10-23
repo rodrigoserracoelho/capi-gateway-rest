@@ -7,7 +7,6 @@ import com.hazelcast.core.HazelcastInstance;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/route")
 @Slf4j
-@io.swagger.annotations.Api(value = "CAPI Route Management", tags = {"CAPI Route Management"}, description = "Use these services to manage your routes")
+@io.swagger.annotations.Api(value = "API's Management", tags = {"API's Management"}, description = "Use these services to manage your API's")
 public class RouteController {
 
     @Autowired
@@ -30,9 +29,9 @@ public class RouteController {
     @Autowired
     private HazelcastInstance hazelcastInstance;
 
-    @ApiOperation(value = "Get all custom routes")
+    @ApiOperation(value = "Get all simple API's")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Route Info", response = Api.class),
+            @ApiResponse(code = 200, message = "API Info", response = Api.class),
             @ApiResponse(code = 400, message = "Bad request")
     })
     @GetMapping( path="/simple-rest" )
@@ -40,9 +39,9 @@ public class RouteController {
         return new ResponseEntity<>(apiRepository.findAllBySwagger(false), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get all Routes (swagger)")
+    @ApiOperation(value = "Get all API's (swagger)")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Route Info", response = Api.class),
+            @ApiResponse(code = 200, message = "API Info", response = Api.class),
             @ApiResponse(code = 400, message = "Bad request")
     })
     @GetMapping( path="/swagger-rest" )
@@ -50,6 +49,12 @@ public class RouteController {
         return new ResponseEntity<>(apiRepository.findAllBySwagger(true), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Publish an API with an exposed swagger endpoint")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "API Created"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 412, message = "Pre Condition failed")
+    })
     @PostMapping( path="/swagger-rest" )
     public ResponseEntity<String> postSwaggerEndpoints(@RequestBody Api api, HttpServletRequest request) {
         if(apiRepository.findByName(api.getName()) != null) {
@@ -61,9 +66,9 @@ public class RouteController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Publish REST API to WSO2")
+    @ApiOperation(value = "Publish an API with your custom defined path")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Route Created"),
+            @ApiResponse(code = 200, message = "API Created"),
             @ApiResponse(code = 400, message = "Bad request"),
             @ApiResponse(code = 412, message = "Pre Condition failed")
     })

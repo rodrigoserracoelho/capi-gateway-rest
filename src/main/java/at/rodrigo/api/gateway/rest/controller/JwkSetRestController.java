@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@io.swagger.annotations.Api(value = "CAPI JWK Endpoint", tags = {"CAPI JWK Endpoint"}, description = "")
+@io.swagger.annotations.Api(value = "CAPI Gateway Public JWK Endpoint", tags = {"CAPI Gateway Public JWK Endpoint"}, description = "If you are using CAPI Tokens to authorize third party servers.")
 public class JwkSetRestController {
 
     @Autowired
