@@ -50,7 +50,7 @@ public class GrafanaController {
                 Context panelContext = new Context();
                 panelContext.setVariable(ThymeleafConfiguration.PANEL_GRID_POSITION, gridPosition);
                 panelContext.setVariable(ThymeleafConfiguration.PANEL_ID, id);
-                panelContext.setVariable(ThymeleafConfiguration.INSTANCE, "172.17.0.1:8380");
+                panelContext.setVariable(ThymeleafConfiguration.INSTANCE, "capi:8380");
                 panelContext.setVariable(ThymeleafConfiguration.TARGET_EXPRESSION, path.getRouteID() + "_total");
                 panelContext.setVariable(ThymeleafConfiguration.PANEL_TITLE, path.getRouteID());
                 gridPosition = gridPosition + incrementGridValue;
@@ -64,10 +64,11 @@ public class GrafanaController {
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.setBearerAuth("eyJrIjoic1RsVjNOdFNhUDQyUU9kVjJteG5HcGxuT0lMQmVPZDciLCJuIjoiY2FwaSIsImlkIjoxfQ==");
+            headers.setBasicAuth("admin", "admin");
+            //headers.setBearerAuth("eyJrIjoic1RsVjNOdFNhUDQyUU9kVjJteG5HcGxuT0lMQmVPZDciLCJuIjoiY2FwaSIsImlkIjoxfQ==");
             HttpEntity<GrafanaDashboard> createRequest = new HttpEntity<>(grafanaDashboard, headers);
 
-            ResponseEntity<GrafanaDashboard> response = restTemplate.exchange("http://localhost:3000/api/dashboards/db", HttpMethod.POST, createRequest, GrafanaDashboard.class);
+            ResponseEntity<GrafanaDashboard> response = restTemplate.exchange("http://grafana:3000/api/dashboards/db", HttpMethod.POST, createRequest, GrafanaDashboard.class);
             if(response.getStatusCode().is2xxSuccessful()) {
                 return response;
             }
