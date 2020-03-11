@@ -9,6 +9,7 @@ public interface ApiRepository extends MongoRepository<Api, String> {
 
     List<Api> findAllBySwagger(boolean swagger);
     Api findByName(String apiName);
+    Api findByContext(String apiContext);
 
 
 }

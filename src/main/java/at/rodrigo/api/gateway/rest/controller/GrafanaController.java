@@ -27,7 +27,7 @@ public class GrafanaController {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GrafanaDashboard> getSimpleRestRoutes(@RequestBody Api api, HttpServletRequest request) {
 
         Context dashboardContext = new Context();

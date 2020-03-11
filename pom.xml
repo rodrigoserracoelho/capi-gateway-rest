@@ -7,7 +7,7 @@
   <groupId>at.rodrigo.api.gateway</groupId>
   <artifactId>capi-gateway-rest</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.2</version>
+  <version>1.3.1</version>
 
   <name>CAPI Gateway REST Interface</name>
 
@@ -84,9 +84,30 @@
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast-spring</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast-zookeeper</artifactId>
+      <version>3.6.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-client</artifactId>
+      <version>4.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-framework</artifactId>
+      <version>4.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.curator</groupId>
+      <artifactId>curator-x-discovery</artifactId>
+      <version>4.3.0</version>
+    </dependency>
 
 
-      <!-- Test -->
+
+    <!-- Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -102,11 +123,6 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20140107</version>
-    </dependency>
-    <dependency>
-      <groupId>at.rodrigo.api.gateway</groupId>
-      <artifactId>api-gateway-cache</artifactId>
-      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

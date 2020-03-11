@@ -1,7 +1,9 @@
 package at.rodrigo.api.gateway.rest;
 
-import com.google.common.base.Predicate;
+import at.rodrigo.api.gateway.rest.configuration.HazelcastConfiguration;
 import com.google.common.base.Predicates;
+import com.hazelcast.config.Config;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,17 +14,35 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
 
 @SpringBootApplication
 @EnableSwagger2
 public class ApiGateway {
+
+    @Value("${gateway.environment}")
+    private String gatewayEnvironment;
+
+    @Value("${gateway.cache.zookeeper.discovery}")
+    private boolean zookeeperDiscovery;
+
+    @Value("${gateway.cache.zookeeper.host}")
+    private String zookeeperHost;
+
+    @Value("${gateway.cache.zookeeper.path}")
+    private String zookeeperPath;
+
+    @Value("${gateway.cache.zookeeper.group.key}")
+    private String zookeeperGroupKey;
+
     public static void main(String[] args) {
         SpringApplication.run(ApiGateway.class, args);
     }
@@ -72,5 +92,10 @@ public class ApiGateway {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return newArrayList(new SecurityReference("Bearer", authorizationScopes));
+    }
+
+    @Bean
+    public Config hazelCastConfig() {
+        return new HazelcastConfiguration(gatewayEnvironment, zookeeperDiscovery, zookeeperHost, zookeeperPath, zookeeperGroupKey);
     }
 }
