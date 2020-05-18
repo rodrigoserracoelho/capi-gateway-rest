@@ -71,12 +71,13 @@ public class ApiValidator {
         if(newApi.getEndpoints().isEmpty()) {
             return false;
         }
-        if(newApi.isSwagger() && newApi.getSwaggerEndpoint() == null) {
+        if(newApi.getSwaggerEndpoint() == null) {
             return false;
         }
         if(newApi.isBlockIfInError() && newApi.getMaxAllowedFailedCalls() < 1) {
             return false;
         }
+
         return true;
     }
 }
