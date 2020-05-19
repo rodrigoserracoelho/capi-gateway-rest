@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/route")
@@ -56,24 +55,14 @@ public class RouteController {
     @Autowired
     private HazelcastInstance hazelcastInstance;
 
-    /*@ApiOperation(value = "Get all simple API's")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "API Info", response = Api.class),
-            @ApiResponse(code = 400, message = "Bad request")
-    })
-    @GetMapping( path="/simple-rest" )
-    public ResponseEntity<List<Api>> getSimpleRestRoutes(HttpServletRequest request) {
-        return new ResponseEntity<>(apiRepository.findAllBySwagger(false), HttpStatus.OK);
-    }*/
-
     @ApiOperation(value = "Get all API's (swagger)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "API Info", response = Api.class),
             @ApiResponse(code = 400, message = "Bad request")
     })
-    @GetMapping( path="/swagger-rest" )
+    @GetMapping
     public ResponseEntity<List<Api>> getSwaggerRestRoutes(HttpServletRequest request) {
-        return new ResponseEntity<>(apiRepository.findAllBySwagger(true), HttpStatus.OK);
+        return new ResponseEntity<>(apiRepository.findAll(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Publish an API with an exposed swagger endpoint")
@@ -82,7 +71,7 @@ public class RouteController {
             @ApiResponse(code = 400, message = "Bad request"),
             @ApiResponse(code = 412, message = "Pre Condition failed")
     })
-    @PostMapping( path="/swagger-rest" )
+    @PostMapping
     public ResponseEntity<String> postSwaggerEndpoints(@RequestBody Api api, HttpServletRequest request) {
         if(apiValidator.isApiValid(api)) {
             apiRepository.save(api);
@@ -90,27 +79,7 @@ public class RouteController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
-        /*api.setId(UUID.randomUUID().toString());
-        apiRepository.save(api);
-        hazelcastInstance.getMap(CacheConstants.RUNNING_API_IMAP_NAME).put(api.getId(), api);
-        return new ResponseEntity<>(HttpStatus.OK);*/
     }
-
-    /*@ApiOperation(value = "Publish an API with your custom defined path")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "API Created"),
-            @ApiResponse(code = 400, message = "Bad request"),
-            @ApiResponse(code = 412, message = "Pre Condition failed")
-    })
-    @PostMapping( path="/simple-rest" )
-    public ResponseEntity<Api> postSimpleRestEndpoints(@RequestBody Api api, HttpServletRequest request) {
-        if(apiValidator.isApiValid(api)) {
-            apiRepository.save(api);
-            hazelcastInstance.getMap(CacheConstants.API_IMAP_NAME).put(api.getId(), api);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
-    }*/
 
     @ApiOperation(value = "Delete an API")
     @ApiResponses(value = {
@@ -141,6 +110,4 @@ public class RouteController {
         }
         return new ResponseEntity<>("API Contains active subscribers", HttpStatus.FORBIDDEN);
     }
-
-
 }
