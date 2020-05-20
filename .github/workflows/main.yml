@@ -15,5 +15,5 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: mvn compile -DskipTests jib:build username=surisoft password=${{ secrets.docker_secret }} --file pom.xml
+      run: mvn compile -DskipTests jib:build -Djib.to.auth.username=surisoft -Djib.to.auth.password=${{ secrets.docker_secret }} --file pom.xml
           
