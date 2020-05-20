@@ -22,7 +22,7 @@ jobs:
       uses: docker/build-push-action@v1.1.0
       with:
         repository: surisoft/capi-gateway-rest 
-        tag_with_ref: $VERSION
+        tags: $VERSION
         username: surisoft 
         password: ${{ secrets.docker_secret }}
           
