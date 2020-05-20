@@ -14,11 +14,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Docker Login
-      uses: Azure/docker-login@v1
-      with:
-        username: surisoft 
-        password: ${{ secrets.docker_secret }} 
     - name: Build with Maven
-      run: mvn compile -DskipTests jib:build --file pom.xml
+      run: mvn compile -DskipTests jib:build username=surisoft password=${{ secrets.docker_secret }} --file pom.xml
           
