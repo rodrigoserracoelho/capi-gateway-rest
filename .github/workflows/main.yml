@@ -18,10 +18,11 @@ jobs:
       run: mvn package --file pom.xml
     - name: Set version
       run: echo ::set-env name=VERSION::$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
-    - name: Docker Publish
-      uses: manusa/actions-publish-docker@v1.0.1
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.1.0
       with:
-        name: surisoft/capi-gateway-rest 
-        tag: $VERSION
+        repository: surisoft/capi-gateway-rest 
+        tag_with_ref: $VERSION
         username: surisoft 
         password: ${{ secrets.docker_secret }}
+          
