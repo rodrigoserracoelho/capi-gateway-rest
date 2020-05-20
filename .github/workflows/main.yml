@@ -25,5 +25,5 @@ jobs:
         tags: ${{ env.VERSION }}
         username: surisoft 
         password: ${{ secrets.docker_secret }}
-        build_args: JAR_FILE=$GITHUB_WORKSPACE/target/capi-rest-gateway-${{ env.VERSION }}.jar
+        build_args: JAR_FILE=${{ GITHUB_WORKSPACE }}/target/capi-rest-gateway-${{ env.VERSION }}.jar
           
