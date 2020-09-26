@@ -1,4 +1,4 @@
-name: CAPI-CICD
+name: CAPI-REST-CICD
 on:
   push:
     branches: [ master ]
