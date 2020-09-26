@@ -16,10 +16,8 @@
 package at.rodrigo.api.gateway.rest.controller;
 
 import at.rodrigo.api.gateway.entity.Api;
-import at.rodrigo.api.gateway.rest.client.CapiClient;
 import at.rodrigo.api.gateway.rest.configuration.CacheConstants;
 import at.rodrigo.api.gateway.rest.repository.ApiRepository;
-import at.rodrigo.api.gateway.rest.repository.CapiClientRepository;
 import at.rodrigo.api.gateway.rest.validator.ApiValidator;
 import com.hazelcast.core.HazelcastInstance;
 import io.swagger.annotations.ApiOperation;
@@ -29,11 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,9 +44,6 @@ public class RouteController {
 
     @Autowired
     private ApiValidator apiValidator;
-
-    @Autowired
-    private CapiClientRepository capiClientRepository;
 
     @Autowired
     private HazelcastInstance hazelcastInstance;
@@ -92,7 +85,7 @@ public class RouteController {
         boolean canDelete = true;
         Optional<Api> api = apiRepository.findById(apiId);
         if(api.isPresent()) {
-            List<CapiClient> clients = capiClientRepository.findAll();
+            /*List<CapiClient> clients = capiClientRepository.findAll();
             for(CapiClient capiClient : clients) {
                 Collection<GrantedAuthority> grantedAuthorities = capiClient.getAuthorities();
                 for(GrantedAuthority grantedAuthority : grantedAuthorities) {
@@ -101,7 +94,7 @@ public class RouteController {
                         break;
                     }
                 }
-            }
+            }*/
         }
         if(canDelete) {
             apiRepository.delete(api.get());
