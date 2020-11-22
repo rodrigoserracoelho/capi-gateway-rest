@@ -72,11 +72,11 @@
       <artifactId>api-gateway-entity</artifactId>
       <version>${at.rodrigo.api.gateway.entity-version}</version>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-oauth2</artifactId>
       <version>${spring.cloud.starter.oauth2-version}</version>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-jwt</artifactId>
