@@ -22,14 +22,14 @@
   <groupId>at.rodrigo.api.gateway</groupId>
   <artifactId>capi-gateway-rest</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.5</version>
+  <version>1.4.6</version>
 
   <name>CAPI Gateway REST Interface</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>2.3.4.RELEASE</spring.boot-version>
+    <spring.boot-version>2.4.2</spring.boot-version>
     <docker.image.prefix>surisoft</docker.image.prefix>
     <org.thymeleaf-version>3.0.11.RELEASE</org.thymeleaf-version>
     <at.rodrigo.api.gateway.entity-version>1.4.0</at.rodrigo.api.gateway.entity-version>
@@ -40,7 +40,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.0</version>
+    <version>2.4.2</version>
     <relativePath/>
   </parent>
   <dependencies>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast-zookeeper</artifactId>
-      <version>4.0.1</version>
+      <version>4.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.apache.curator</groupId>
