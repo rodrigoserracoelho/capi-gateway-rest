@@ -8,16 +8,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        repository: 'rodrigoserracoelho/capi-gateway-entity'
-        path: capi-gateway-entity
     - name: Set up JDK 14
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - name: Build with Maven
-      run: mvn install --file capi-gateway-entity/pom.xml
-    - uses: actions/checkout@v2  
+    - uses: actions/checkout@v2
+    - name: maven-settings-xml-action
+      uses: whelk-io/maven-settings-xml-action@v14
+      with:
+        servers: '[{ "id": "github", "username": "${{ secrets.MAVEN_REPO_USER }}", "password": "${{ secrets.MAVEN_REPO }}" }]'
     - name: Build with Maven
       run: mvn compile -DskipTests jib:build -Djib.to.auth.username=surisoft -Djib.to.auth.password=${{ secrets.docker_secret }} --file pom.xml
