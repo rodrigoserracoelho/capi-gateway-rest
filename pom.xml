@@ -22,7 +22,7 @@
   <groupId>at.rodrigo.api.gateway</groupId>
   <artifactId>capi-gateway-rest</artifactId>
   <packaging>jar</packaging>
-  <version>1.4.7</version>
+  <version>1.4.8</version>
 
   <name>CAPI Gateway REST Interface</name>
 
