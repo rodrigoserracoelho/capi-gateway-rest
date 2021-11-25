@@ -38,7 +38,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 
-    @Value("{capi.security.enabled}")
+    @Value("${capi.security.enabled}")
     private boolean securityEnabled;
 
     @Autowired
