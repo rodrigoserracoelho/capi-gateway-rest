@@ -20,6 +20,7 @@ import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,10 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+
+
+    @Value("{capi.security.enabled}")
+    private boolean securityEnabled;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
@@ -57,11 +62,17 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/route*").hasAnyRole("user", "manage-account")
-                .anyRequest()
-                .permitAll();
-
+        if(securityEnabled) {
+            http.csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers("/route*").hasAnyRole("user", "manage-account")
+                    .anyRequest()
+                    .permitAll();
+        } else {
+            http.csrf().disable()
+                    .authorizeRequests()
+                    .anyRequest()
+                    .permitAll();
+        }
     }
 }
